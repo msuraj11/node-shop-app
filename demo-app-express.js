@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/create-user', (req, res) => {
   const {userName} = req.body;
   users.push(userName);
-  fs.writeFile('message.txt', users.join(', '), err => {
+  fs.writeFile('message.txt', users.join(',\n'), err => {
     res.statusCode = 302;
     res.redirect('/');
   });
@@ -29,7 +29,10 @@ app.use('/', (req, res) => {
                     }
                 </ul>
               </form>
-            </body>`
+            </body>
+            <script>
+              document.querySelector('input').focus();
+            </script>`
           );
 });
 
