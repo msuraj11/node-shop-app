@@ -1,40 +1,26 @@
-const express =  require('express');
+const path = require('path');
+
+const express = require('express');
 
 const router = express.Router();
 
 const products = [];
 
-router.get('/add-product', (req, res) => {
-  res.send(`<body>
-              <header>
-                <nav>
-                  <ul>
-                    <li><a href="/">Shop</a></li>
-                    <li><a href="/admin/add-product">Add Product</a></li>
-                  </ul>
-                </nav>
-              </header>
-              <form action="/admin/add-product" method="POST">
-                <label>Add products to cart</label>
-                <input required type="text" name="product" />
-                <button type="submit">Send</button>
-                <ul>
-                    ${products.length > 0 ?
-                      products.map(product => `<li>${product}</li>`).join('') : ''
-                    }
-                </ul>
-              </form>
-            </body>
-            <script>
-              document.querySelector('input').focus();
-            </script>`
-          );
+// /admin/add-product => GET
+router.get('/add-product', (req, res, next) => {
+  res.render('add-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product'
+  });
 });
 
-router.post('/add-product', (req, res) => {
-  const {product} = req.body;
-  products.push(product);
+// /admin/add-product => POST
+router.post('/add-product', (req, res, next) => {
+  products.push({title: req.body.title});
   res.redirect('/');
 });
 
-module.exports = router;
+module.exports = {
+  routes: router,
+  products
+};
